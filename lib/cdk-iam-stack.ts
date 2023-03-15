@@ -24,11 +24,14 @@ export class CdkIamStack extends cdk.Stack {
       effect: Effect.ALLOW,
       resources: ['*']
     })
-    const user = new User(this, 'kubernetesDNSCertManagerUser');
+    const kubernetsUser = new User(this, 'kubernetesDNSCertManagerUser');
+    const certbotUser = new User(this, 'certBotDNSCertManagerUser');
 
     const dnsMangerRole = new Role(this, 'kubernetesDNSCertManagerRole', {
-      assumedBy: user
+      assumedBy: kubernetsUser
     })
+
+    dnsMangerRole.grantAssumeRole(certbotUser)
 
     dnsMangerRole.addToPolicy(route53GetChangePolicy)
     dnsMangerRole.addToPolicy(route53ChangeResourceRecordSetsPolicy)
