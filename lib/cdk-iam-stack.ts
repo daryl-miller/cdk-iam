@@ -10,7 +10,7 @@ export class CdkIamStack extends cdk.Stack {
     const route53GetChangePolicy = new PolicyStatement({
       actions: ['route53:GetChange'],
       effect: Effect.ALLOW,
-      resources: ['arn:aws:route53:::change/*']
+      resources: ['*']
     })
     const route53ChangeResourceRecordSetsPolicy = new PolicyStatement({
       actions: [        
@@ -19,8 +19,8 @@ export class CdkIamStack extends cdk.Stack {
       effect: Effect.ALLOW,
       resources: ['arn:aws:route53:::hostedzone/*']
     })
-    const route53ListHostedZonesByNamePolicy = new PolicyStatement({
-      actions: ['route53:ListHostedZonesByName'],
+    const route53ListHostedZones = new PolicyStatement({
+      actions: ['route53:ListHostedZonesByName', 'route53:ListHostedZones'],
       effect: Effect.ALLOW,
       resources: ['*']
     })
@@ -34,10 +34,10 @@ export class CdkIamStack extends cdk.Stack {
     //Certbot doesn't support assumerole
     certbotUser.addToPolicy(route53GetChangePolicy)
     certbotUser.addToPolicy(route53ChangeResourceRecordSetsPolicy)
-    certbotUser.addToPolicy(route53ListHostedZonesByNamePolicy)
+    certbotUser.addToPolicy(route53ListHostedZones)
 
     dnsMangerRole.addToPolicy(route53GetChangePolicy)
     dnsMangerRole.addToPolicy(route53ChangeResourceRecordSetsPolicy)
-    dnsMangerRole.addToPolicy(route53ListHostedZonesByNamePolicy)
+    dnsMangerRole.addToPolicy(route53ListHostedZones)
   }
 }
