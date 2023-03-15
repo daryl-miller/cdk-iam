@@ -31,7 +31,10 @@ export class CdkIamStack extends cdk.Stack {
       assumedBy: kubernetsUser
     })
 
-    dnsMangerRole.grantAssumeRole(certbotUser)
+    //Certbot doesn't support assumerole
+    certbotUser.addToPolicy(route53GetChangePolicy)
+    certbotUser.addToPolicy(route53ChangeResourceRecordSetsPolicy)
+    certbotUser.addToPolicy(route53ListHostedZonesByNamePolicy)
 
     dnsMangerRole.addToPolicy(route53GetChangePolicy)
     dnsMangerRole.addToPolicy(route53ChangeResourceRecordSetsPolicy)
